@@ -1,13 +1,13 @@
 export abstract class BaseState<T>
 {
-	public get stateMachine(): T { return this._stateMachine; }
-	private _stateMachine: T;
+	public get machine(): T { return this._machine; }
+	private _machine: T;
 
-	public constructor(stateMachine: T)
+	public constructor(machine: T)
 	{
-		this._stateMachine = stateMachine;
+		this._machine = machine;
 	}
 
-    public abstract enter(): void;
-    public abstract exit(): void;
+	public abstract enter(): void;
+	public abstract exit(): void;
 }
