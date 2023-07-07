@@ -20,7 +20,7 @@ export class GameScene extends BaseScene
 		this._currentLevel.addToContainer(game.app.stage);
 	}
 
-	public update(): void
+	public update(deltaTime: number): void
 	{
 
 	}

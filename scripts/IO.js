@@ -1,7 +1,13 @@
 const fs = require("fs");
+const path = require("path");
 
 module.exports = {
-	getAllFilesOfType: (directory, extension) =>
+	getAllFilesOfType: async(directory, extension) =>
+	{
+		return (await module.exports.getAllFilesInFolder(directory)).filter(file => { return file.includes(extension); });
+	},
+
+	getAllFilesInFolder: async(directory) =>
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -11,7 +17,7 @@ module.exports = {
 					reject(err);
 				}
 				else {
-					resolve(files.filter(file => { return file.includes(extension); }));
+					resolve(files);
 				}
 			});
 		});
@@ -74,6 +80,15 @@ module.exports = {
 	{
 		if (!fs.existsSync(folderPath)) {
 			fs.mkdirSync(folderPath, { recursive: true });
+		}
+	},
+
+	cleanFolder: async(directory) =>
+	{
+		const files = await module.exports.getAllFilesInFolder(directory);
+		for (let i = 0; i < files.length; i++)
+		{
+			fs.unlinkSync(path.join(directory, files[i]));
 		}
 	}
 }

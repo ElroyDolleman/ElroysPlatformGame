@@ -25,5 +25,10 @@ module.exports = {
 	exportTiledTileset: (sourceFilePath, outputFilePath) =>
 	{
 		return module.exports.run(`Tiled --export-tileset ${sourceFilePath} ${outputFilePath}`);
+	},
+
+	exportAsepriteFile: (sourceFilePath, outputFilePath) =>
+	{
+		return module.exports.run(`aseprite -b ${sourceFilePath} --save-as ${outputFilePath}`);
 	}
 }
