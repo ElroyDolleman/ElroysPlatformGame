@@ -14,7 +14,6 @@ import { StateMachine } from "../../state_machine/StateMachine";
 import { NeckyIdleState } from "./states/NeckyIdleState";
 import { NeckyWalkState } from "./states/NeckyWalkState";
 import { NeckyBaseState } from "./states/NeckyBaseState";
-import { GraphicsShapes } from "../../assets/GraphicsShapes";
 import { NeckyFallState } from "./states/NeckyFallState";
 import { NeckyJumpState } from "./states/NeckyJumpState";
 import { NeckyConfig } from "./NeckyConfig";
@@ -93,7 +92,6 @@ export class Necky extends Entity implements IDrawable, IUpdateable
 
 	public lateUpdate(deltaTime: number): void
 	{
-		GraphicsShapes.drawRectangle(this.hitbox.x, this.hitbox.y, this.hitbox.width, this.hitbox.height, 0xFF0000, 0.5);
 		this._updateSpritePosition();
 
 		if (this.speed.x < 0)

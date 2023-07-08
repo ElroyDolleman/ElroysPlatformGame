@@ -1,6 +1,10 @@
+import { game } from "../app";
+import { KeyboardKey } from "./InputManager";
+import { KeyCodes } from "./KeyCodes";
+
 export interface IUpdateable
 {
-    update(deltaTime: number);
+	update(deltaTime: number);
 }
 
 export class UpdateManager
@@ -14,10 +18,28 @@ export class UpdateManager
 	private _paused: number = 0;
 	private _deltaTime: number = 0;
 
+	private _frameAdvancementMode: boolean = false;
+	private _frameAdvanceKeyPressed: boolean = false;
+
 	public constructor()
 	{
 		window.addEventListener("blur", () => { this._handleWindowBlur(); });
 		window.addEventListener("focus", () => { this._handleWindowFocus(); });
+
+		if (DEV)
+		{
+			window.addEventListener("keyup", event =>
+			{
+				if (event.code === KeyCodes.B)
+				{
+					this._frameAdvancementMode = !this._frameAdvancementMode;
+				}
+				if (event.code === KeyCodes.F)
+				{
+					this._frameAdvanceKeyPressed = true;
+				}
+			});
+		}
 	}
 
 	public add(updateable: IUpdateable): void
@@ -41,6 +63,22 @@ export class UpdateManager
 
 	public update(deltaTime: number): void
 	{
+		if (DEV && this._frameAdvancementMode)
+		{
+			if (this._frameAdvanceKeyPressed)
+			{
+				this._frameAdvanceKeyPressed = false;
+				this._update(deltaTime);
+			}
+		}
+		else
+		{
+			this._update(deltaTime);
+		}
+	}
+
+	private _update(deltaTime: number): void
+	{
 		// TODO: Provide option for fixed or non-fixed delta time
 		this._deltaTime = 0.016667;
 
@@ -49,7 +87,6 @@ export class UpdateManager
 
 		for (let i = 0; i < this._updateables.length; i++)
 		{
-			// TODO: Provide option for fixed or non-fixed delta time
 			this._updateables[i].update(this._deltaTime);
 		}
 	}
