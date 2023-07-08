@@ -1,5 +1,5 @@
 import { game } from "../app";
-import { Necky } from "../character/Necky";
+import { Necky } from "../character/necky/Necky";
 import { Level } from "../level/Level";
 import { BaseScene } from "./BaseScene";
 
@@ -18,12 +18,12 @@ export class GameScene extends BaseScene
 
 		this._necky = new Necky({ x: 100, y: 100 });
 		await this._necky.loadAssets();
-		this._necky.addToContainer(game.app.stage);
 	}
 
 	public enter(): void
 	{
 		this._currentLevel.addToContainer(game.app.stage);
+		this._necky.addToContainer(game.app.stage);
 	}
 
 	public update(deltaTime: number): void

@@ -5,6 +5,7 @@ type State<T> = BaseState<StateMachine<T>>;
 export class StateMachine<T>
 {
 	public get target(): T { return this._target; }
+	public get currentState(): State<T> { return this._currentState; }
 
 	private _target: T;
 	private _currentState: State<T>;

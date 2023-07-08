@@ -19,6 +19,8 @@ export class SpriteAnimator implements IUpdateable, ISpriteAnimatorProperties
 
 	public get interval(): number { return 1 / this.frameRate; }
 
+	public get facingDirection(): -1 | 1 { return this.sprite.scale.x < 0 ? -1 : 1; }
+
 	public readonly startAnimation: string;
 	public readonly animations: AnimationData;
 	public readonly sprite: Sprite;
