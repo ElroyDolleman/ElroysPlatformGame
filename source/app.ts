@@ -3,6 +3,7 @@ import { UpdateManager } from "./managers/UpdateManager";
 import { LevelLoader } from "./level/LevelLoader";
 import { SceneManager } from "./scenes/SceneManager";
 import { DelayManager } from "./managers/DelayManager";
+import { AssetLoader } from "./assets/AssetLoader";
 
 type Game = {
 	app: Application;
@@ -13,6 +14,7 @@ type Game = {
 		sceneManager: SceneManager;
 	}
 	levelLoader: LevelLoader;
+	assetLoader: AssetLoader;
 }
 export let game: Game;
 
@@ -40,6 +42,7 @@ document.addEventListener("DOMContentLoaded", async() =>
 			sceneManager: new SceneManager()
 		},
 		levelLoader: new LevelLoader(),
+		assetLoader: new AssetLoader()
 	};
 	BaseTexture.defaultOptions.scaleMode = SCALE_MODES.NEAREST;
 

@@ -18,8 +18,14 @@ export abstract class Collidable<T extends CollidableHitbox<T>>
 	}
 	public speed: Vector2;
 
-	public abstract moveX(): void;
-	public abstract moveY(): void;
+	public moveX(): void
+	{
+		this.hitbox.x += this.speed.x;
+	}
+	public moveY(): void
+	{
+		this.hitbox.y += this.speed.y;
+	}
 
 	public abstract onCollisionSolved(result: ICollisionData): void;
 }

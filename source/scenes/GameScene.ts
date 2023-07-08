@@ -1,4 +1,5 @@
 import { game } from "../app";
+import { Necky } from "../character/Necky";
 import { Level } from "../level/Level";
 import { BaseScene } from "./BaseScene";
 
@@ -9,10 +10,15 @@ type GameSceneData = {
 export class GameScene extends BaseScene
 {
 	private _currentLevel: Level;
+	private _necky: Necky;
 
 	public async initialize(data: GameSceneData): Promise<void>
 	{
 		this._currentLevel = await game.levelLoader.loadLevel(data.level);
+
+		this._necky = new Necky({ x: 100, y: 100 });
+		await this._necky.loadAssets();
+		this._necky.addToContainer(game.app.stage);
 	}
 
 	public enter(): void
