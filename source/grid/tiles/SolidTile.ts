@@ -5,6 +5,11 @@ import { Tile } from "./Tile";
 
 export class SolidTile extends Tile
 {
+	public intersects(collidable: CollidableRectangle): boolean
+	{
+		return collidable.hitbox.intersects(this.hitbox);
+	}
+
 	public solveHorizontalCollision(collidable: CollidableRectangle): CollisionResult<Tile>
 	{
 		if (collidable.speed.x > 0)

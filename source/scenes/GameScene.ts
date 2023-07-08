@@ -29,6 +29,8 @@ export class GameScene extends BaseScene
 	public update(deltaTime: number): void
 	{
 		this._necky.update(deltaTime);
+		this._currentLevel.collisionManager.moveCollidable(this._necky);
+		this._necky.lateUpdate(deltaTime);
 	}
 
 	public async exit(): Promise<void>

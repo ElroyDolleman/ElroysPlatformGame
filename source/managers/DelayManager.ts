@@ -35,6 +35,11 @@ export class DelayManager
 		}
 	}
 
+	public afterFrame(): Promise<void>
+	{
+		return this.afterMilliseconds(0);
+	}
+
 	public afterCustom(isDone: (millisecondsPassed: number) => boolean): Promise<void>
 	{
 		return new Promise<void>(resolve =>

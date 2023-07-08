@@ -27,19 +27,25 @@ export class TileCollisionManager
 		collidable.moveX();
 		for (let i = 0; i < cells.length; i++)
 		{
-			const result = cells[i].solveHorizontalCollision(collidable);
+			if (cells[i].intersects(collidable))
+			{
+				const result = cells[i].solveHorizontalCollision(collidable);
 
-			if (result.onLeft) { data.collided.onLeft = result.onLeft; }
-			else if (result.onRight) { data.collided.onRight = result.onRight; }
+				if (result.onLeft) { data.collided.onLeft = result.onLeft; }
+				else if (result.onRight) { data.collided.onRight = result.onRight; }
+			}
 		}
 
 		collidable.moveY();
 		for (let i = 0; i < cells.length; i++)
 		{
-			const result = cells[i].solveVerticalCollision(collidable);
+			if (cells[i].intersects(collidable))
+			{
+				const result = cells[i].solveVerticalCollision(collidable);
 
-			if (result.onTop) { data.collided.onTop = result.onTop; }
-			else if (result.onBottom) { data.collided.onBottom = result.onBottom; }
+				if (result.onTop) { data.collided.onTop = result.onTop; }
+				else if (result.onBottom) { data.collided.onBottom = result.onBottom; }
+			}
 		}
 
 		collidable.onCollisionSolved(data);

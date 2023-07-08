@@ -3,10 +3,12 @@ import { Tile } from "../grid/tiles/Tile";
 import { Grid } from "../grid/Grid";
 import { LevelData } from "./LevelData";
 import { IDrawable } from "../entities/IDrawable";
+import { TileCollisionManager } from "../collision/TileCollisionManager";
 
 export class Level implements IDrawable
 {
 	public readonly grid: Grid<Tile>;
+	public readonly collisionManager: TileCollisionManager;
 
 	public constructor(tiles: Tile[], levelData: LevelData)
 	{
@@ -16,6 +18,8 @@ export class Level implements IDrawable
 			cellWidth: levelData.tileWidth,
 			cellHeight: levelData.tileHeight
 		});
+
+		this.collisionManager = new TileCollisionManager(this.grid);
 	}
 
 	public loadAssets(): Promise<void>

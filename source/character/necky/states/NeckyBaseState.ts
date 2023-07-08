@@ -6,5 +6,6 @@ import { Necky } from "../Necky";
 export abstract class NeckyBaseState extends BaseState<StateMachine<Necky>>
 {
 	public abstract update(deltaTime: number): void;
+	public lateUpdate(deltaTime: number): void {}
 	public abstract onCollisionSolved(result: ICollisionData): void;
 }

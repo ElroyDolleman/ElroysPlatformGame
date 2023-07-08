@@ -13,7 +13,14 @@ export class NeckyWalkState extends NeckyBaseState
 	{
 		this.machine.target.updateMovementControls(deltaTime);
 
-		// TODO: Handle in a late update after collision is resolved
+		if (this.machine.target.rightKey.released && this.machine.target.leftKey.released)
+		{
+			this.machine.changeState(NeckyStates.IDLE);
+		}
+	}
+
+	public lateUpdate(deltaTime: number): void
+	{
 		if (this.machine.target.speed.x < 0)
 		{
 			this.machine.target.sprite.scale.x = -1;
@@ -21,11 +28,6 @@ export class NeckyWalkState extends NeckyBaseState
 		if (this.machine.target.speed.x > 0)
 		{
 			this.machine.target.sprite.scale.x = 1;
-		}
-
-		if (this.machine.target.rightKey.released && this.machine.target.leftKey.released)
-		{
-			this.machine.changeState(NeckyStates.IDLE);
 		}
 	}
 

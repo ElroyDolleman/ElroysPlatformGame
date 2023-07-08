@@ -14,6 +14,7 @@ import { StateMachine } from "../../state_machine/StateMachine";
 import { NeckyIdleState } from "./states/NeckyIdleState";
 import { NeckyWalkState } from "./states/NeckyWalkState";
 import { NeckyBaseState } from "./states/NeckyBaseState";
+import { GraphicsShapes } from "../../assets/GraphicsShapes";
 
 export enum NeckyStates {
 	IDLE = "idle",
@@ -63,25 +64,9 @@ export class Necky extends Entity implements IDrawable, IUpdateable
 		this._stateMachine.start(NeckyStates.IDLE);
 	}
 
-	public moveX(): void
-	{
-		super.moveX();
-		this._updateSpritePosition();
-	}
-	public moveY(): void
-	{
-		super.moveY();
-		this._updateSpritePosition();
-	}
-	public setPosition(position: IPoint): void
-	{
-		super.setPosition(position);
-		this._updateSpritePosition();
-	}
-
 	private _updateSpritePosition(): void
 	{
-		this.sprite.position.y = this.hitbox.y;
+		this.sprite.position.y = this.hitbox.bottom;
 		this.sprite.position.x = this.hitbox.centerX;
 	}
 
@@ -93,10 +78,13 @@ export class Necky extends Entity implements IDrawable, IUpdateable
 	public update(deltaTime: number): void
 	{
 		(this._stateMachine.currentState as NeckyBaseState).update(deltaTime);
+	}
 
-		// TODO: Needs to be done by the collision system
-		this.moveX();
-		this.moveY();
+	public lateUpdate(deltaTime: number): void
+	{
+		GraphicsShapes.drawRectangle(this.hitbox.x, this.hitbox.y, this.hitbox.width, this.hitbox.height, 0xFF0000, 0.5);
+		this._updateSpritePosition();
+		(this._stateMachine.currentState as NeckyBaseState).lateUpdate(deltaTime);
 	}
 
 	public updateMovementControls(deltaTime: number, speed: number = 40): void
