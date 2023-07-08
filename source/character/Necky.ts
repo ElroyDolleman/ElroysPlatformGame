@@ -17,12 +17,16 @@ export class Necky extends Entity implements IDrawable, IUpdateable
 	public spriteAnimator: SpriteAnimator;
 
 	public rightKey: KeyboardKey;
+	public leftKey: KeyboardKey;
+	public crouchKey: KeyboardKey;
 
 	public constructor(spawnPosition: IPoint)
 	{
 		super({ x: 0, y: 0, width: 32, height: 32 }, spawnPosition);
 
 		this.rightKey = game.managers.inputManager.addKey(KeyCodes.ArrowRight);
+		this.leftKey = game.managers.inputManager.addKey(KeyCodes.ArrowLeft);
+		this.crouchKey = game.managers.inputManager.addKey(KeyCodes.ArrowDown);
 	}
 
 	public async loadAssets(): Promise<void>
@@ -72,7 +76,22 @@ export class Necky extends Entity implements IDrawable, IUpdateable
 
 	public update(deltaTime: number): void
 	{
+		if (this.leftKey.pressed)
+		{
+			this.speed.x = -40 * deltaTime;
+		}
+		else if (this.rightKey.pressed)
+		{
+			this.speed.x = 40 * deltaTime;
+		}
+		else if (this.rightKey.released && this.leftKey.released)
+		{
+			this.speed.x = 0;
+		}
 
+		// TODO: Needs to be done by the collision system
+		this.moveX();
+		this.moveY();
 	}
 
 	public onCollisionSolved(result: ICollisionData): void

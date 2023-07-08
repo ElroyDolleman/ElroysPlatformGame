@@ -28,7 +28,7 @@ export class KeyboardKey
 		return 0;
 	}
 
-	private _state: KeyboardStates;
+	private _state: KeyboardStates = KeyboardStates.RELEASED;
 	private _updateManager: UpdateManager;
 	private _frameWhenPressed: number = 0;
 
@@ -60,6 +60,8 @@ export class InputManager
 		window.addEventListener("keydown", event => this.handleKeyDown(event));
 		window.addEventListener("keyup", event => this.handleKeyUp(event));
 
+		window.addEventListener("blur", () => { this._handleWindowBlur(); });
+
 		this._updateManager = updateManager;
 	}
 
@@ -76,12 +78,23 @@ export class InputManager
 	{
 		if (!event.repeat)
 		{
+			// console.log("press", event.code, this._keys[event.code] === undefined);
 			this._keys[event.code]?.setPressed();
 		}
 	}
 
 	public handleKeyUp(event: KeyboardEvent): void
 	{
+		// console.log("release", event.code, this._keys[event.code] === undefined);
 		this._keys[event.code]?.setReleased();
+	}
+
+	private _handleWindowBlur(): void
+	{
+		// Reset all keys when the window gets blurred
+		Object.keys(this._keys).forEach(keycode =>
+		{
+			this._keys[keycode].setReleased();
+		});
 	}
 }
