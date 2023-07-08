@@ -1,10 +1,10 @@
-import { Assets, Rectangle, Sprite, Texture } from "pixi.js";
+import { Assets, Sprite, Texture } from "pixi.js";
 import { TileTypes, createTile } from "../grid/tiles/CreateTile";
 import { LevelData } from "./LevelData";
 import { TileData, TilesetData } from "./TilesetData";
 import { Tile } from "../grid/tiles/Tile";
-import { game } from "../app";
 import { Level } from "./Level";
+import { Rectangle } from "../geometry/Rectangle";
 
 export class LevelLoader
 {

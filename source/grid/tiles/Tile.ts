@@ -1,7 +1,8 @@
-import { Rectangle, Sprite } from "pixi.js";
+import { Sprite } from "pixi.js";
 import { CollidableRectangle } from "../../collision/Collidable";
 import { IRectangle } from "../../geometry/IRectangle";
 import { CollisionResult } from "../../collision/CollisionResult";
+import { Rectangle } from "../../geometry/Rectangle";
 
 export abstract class Tile
 {
