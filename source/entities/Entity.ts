@@ -17,4 +17,10 @@ export abstract class Entity extends Collidable<Rectangle>
 		);
 		this.speed = new Vector2();
 	}
+
+	public setPosition(position: IPoint): void
+	{
+		this.hitbox.x = position.x;
+		this.hitbox.y = position.y;
+	}
 }

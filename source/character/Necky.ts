@@ -6,10 +6,12 @@ import { IPoint } from "../geometry/IPoint";
 import { game } from "../app";
 import { TexturePaths } from "../assets/Assets";
 import { Animations } from "../assets/Animations";
+import { SpriteAnimator } from "../assets/SpriteAnimator";
 
 export class Necky extends Entity implements IDrawable
 {
 	public sprite: Sprite;
+	public spriteAnimator: SpriteAnimator;
 
 	public constructor(spawnPosition: IPoint)
 	{
@@ -21,11 +23,39 @@ export class Necky extends Entity implements IDrawable
 		const texture = await game.assetLoader.loadTexture(TexturePaths.NECKY);
 
 		this.sprite = new Sprite(new Texture(texture.baseTexture));
-		this.sprite.texture.frame = Animations.NECKY["necky_idle"][0];
 
 		this.sprite.anchor.x = 0.5;
+		this.sprite.anchor.y = 1;
 		this.sprite.position.x = this.hitbox.centerX;
 		this.sprite.position.y = this.hitbox.y;
+
+		this.spriteAnimator = new SpriteAnimator({
+			sprite: this.sprite,
+			animations: Animations.NECKY,
+			startAnimation: "necky_walk",
+		});
+	}
+
+	public moveX(): void
+	{
+		super.moveX();
+		this._updateSpritePosition();
+	}
+	public moveY(): void
+	{
+		super.moveY();
+		this._updateSpritePosition();
+	}
+	public setPosition(position: IPoint): void
+	{
+		super.setPosition(position);
+		this._updateSpritePosition();
+	}
+
+	private _updateSpritePosition(): void
+	{
+		this.sprite.position.y = this.hitbox.y;
+		this.sprite.position.x = this.hitbox.centerX;
 	}
 
 	public addToContainer(container: Container<DisplayObject>): void

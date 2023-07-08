@@ -35,7 +35,8 @@ export class UpdateManager
 	{
 		for (let i = 0; i < this._updateables.length; i++)
 		{
-			this._updateables[i].update(deltaTime);
+			// TODO: Provide option for fixed or non-fixed delta time
+			this._updateables[i].update(0.016667);
 		}
 	}
 }
