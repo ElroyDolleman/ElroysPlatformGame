@@ -28,7 +28,7 @@ export class GameScene extends BaseScene
 
 	public update(deltaTime: number): void
 	{
-
+		this._necky.update(deltaTime);
 	}
 
 	public async exit(): Promise<void>

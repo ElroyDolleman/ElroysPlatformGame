@@ -4,6 +4,7 @@ import { LevelLoader } from "./level/LevelLoader";
 import { SceneManager } from "./scenes/SceneManager";
 import { DelayManager } from "./managers/DelayManager";
 import { AssetLoader } from "./assets/AssetLoader";
+import { InputManager } from "./managers/InputManager";
 
 type Game = {
 	app: Application;
@@ -12,6 +13,7 @@ type Game = {
 		updateManager: UpdateManager;
 		delayManager: DelayManager;
 		sceneManager: SceneManager;
+		inputManager: InputManager;
 	}
 	levelLoader: LevelLoader;
 	assetLoader: AssetLoader;
@@ -38,8 +40,9 @@ document.addEventListener("DOMContentLoaded", async() =>
 		ticker: Ticker.shared,
 		managers: {
 			updateManager,
+			inputManager: new InputManager(updateManager),
 			delayManager: new DelayManager(updateManager),
-			sceneManager: new SceneManager()
+			sceneManager: new SceneManager(),
 		},
 		levelLoader: new LevelLoader(),
 		assetLoader: new AssetLoader()

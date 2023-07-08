@@ -5,7 +5,10 @@ export interface IUpdateable
 
 export class UpdateManager
 {
+	public get frameCounter(): number { return this._frameCounter; }
+
 	private _updateables: IUpdateable[] = [];
+	private _frameCounter: number = 0;
 
 	public constructor()
 	{
@@ -33,6 +36,8 @@ export class UpdateManager
 
 	public update(deltaTime: number): void
 	{
+		this._frameCounter++;
+
 		for (let i = 0; i < this._updateables.length; i++)
 		{
 			// TODO: Provide option for fixed or non-fixed delta time

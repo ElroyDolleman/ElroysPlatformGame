@@ -7,15 +7,22 @@ import { game } from "../app";
 import { TexturePaths } from "../assets/Assets";
 import { Animations } from "../assets/Animations";
 import { SpriteAnimator } from "../assets/SpriteAnimator";
+import { IUpdateable } from "../managers/UpdateManager";
+import { KeyboardKey } from "../managers/InputManager";
+import { KeyCodes } from "../managers/KeyCodes";
 
-export class Necky extends Entity implements IDrawable
+export class Necky extends Entity implements IDrawable, IUpdateable
 {
 	public sprite: Sprite;
 	public spriteAnimator: SpriteAnimator;
 
+	public rightKey: KeyboardKey;
+
 	public constructor(spawnPosition: IPoint)
 	{
 		super({ x: 0, y: 0, width: 32, height: 32 }, spawnPosition);
+
+		this.rightKey = game.managers.inputManager.addKey(KeyCodes.ArrowRight);
 	}
 
 	public async loadAssets(): Promise<void>
@@ -61,6 +68,11 @@ export class Necky extends Entity implements IDrawable
 	public addToContainer(container: Container<DisplayObject>): void
 	{
 		container.addChild(this.sprite);
+	}
+
+	public update(deltaTime: number): void
+	{
+
 	}
 
 	public onCollisionSolved(result: ICollisionData): void
