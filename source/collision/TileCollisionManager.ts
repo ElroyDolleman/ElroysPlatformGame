@@ -23,6 +23,7 @@ export class TileCollisionManager
 	{
 		const cells = this._grid.getCellsInRectangle(collidable.nextHitbox, 2);
 		const data = this._getDefualtData(collidable);
+		data.tiles = cells;
 
 		collidable.moveX();
 		for (let i = 0; i < cells.length; i++)

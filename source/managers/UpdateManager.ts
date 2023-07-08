@@ -6,11 +6,13 @@ export interface IUpdateable
 export class UpdateManager
 {
 	public get frameCounter(): number { return this._frameCounter; }
+	public get currentDeltaTime(): number { return this._deltaTime; }
 
 	private _updateables: IUpdateable[] = [];
 	private _frameCounter: number = 0;
 
 	private _paused: number = 0;
+	private _deltaTime: number = 0;
 
 	public constructor()
 	{
@@ -39,13 +41,16 @@ export class UpdateManager
 
 	public update(deltaTime: number): void
 	{
+		// TODO: Provide option for fixed or non-fixed delta time
+		this._deltaTime = 0.016667;
+
 		if (this._paused > 0) { return; }
 		this._frameCounter++;
 
 		for (let i = 0; i < this._updateables.length; i++)
 		{
 			// TODO: Provide option for fixed or non-fixed delta time
-			this._updateables[i].update(0.016667);
+			this._updateables[i].update(this._deltaTime);
 		}
 	}
 

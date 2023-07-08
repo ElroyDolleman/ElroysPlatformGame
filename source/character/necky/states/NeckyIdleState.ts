@@ -1,8 +1,8 @@
 import { ICollisionData } from "../../../collision/TileCollisionManager";
 import { NeckyStates } from "../Necky";
-import { NeckyBaseState } from "./NeckyBaseState";
+import { NeckyGroundedState } from "./NeckyGroundedState";
 
-export class NeckyIdleState extends NeckyBaseState
+export class NeckyIdleState extends NeckyGroundedState
 {
 	public enter(): void
 	{
@@ -19,11 +19,8 @@ export class NeckyIdleState extends NeckyBaseState
 			// Ensure the movement is updated at the frame you press to move
 			this.machine.target.updateMovementControls(deltaTime);
 		}
-	}
 
-	public onCollisionSolved(result: ICollisionData): void
-	{
-
+		super.update(deltaTime);
 	}
 
 	public exit(): void

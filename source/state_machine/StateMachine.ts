@@ -34,6 +34,7 @@ export class StateMachine<T>
 
 	protected _enterState(stateKey: string): void
 	{
+		console.log(stateKey);
 		this._currentState = this._states[stateKey];
 		if (!this._currentState)
 		{

@@ -1,10 +1,11 @@
 import { CollidableRectangle } from "../../collision/Collidable";
 import { CollisionResult } from "../../collision/CollisionResult";
-import { IRectangle } from "../../geometry/IRectangle";
 import { Tile } from "./Tile";
 
 export class SolidTile extends Tile
 {
+	public canStandOn(): boolean { return true; }
+
 	public intersects(collidable: CollidableRectangle): boolean
 	{
 		return collidable.hitbox.intersects(this.hitbox);

@@ -15,10 +15,17 @@ import { NeckyIdleState } from "./states/NeckyIdleState";
 import { NeckyWalkState } from "./states/NeckyWalkState";
 import { NeckyBaseState } from "./states/NeckyBaseState";
 import { GraphicsShapes } from "../../assets/GraphicsShapes";
+import { NeckyFallState } from "./states/NeckyFallState";
+import { NeckyJumpState } from "./states/NeckyJumpState";
+import { NeckyConfig } from "./NeckyConfig";
+import { NumberUtility } from "../../utils/NumberUtility";
+import { Rectangle } from "../../geometry/Rectangle";
 
 export enum NeckyStates {
 	IDLE = "idle",
 	WALK = "walk",
+	FALL = "fall",
+	JUMP = "jump",
 }
 
 export class Necky extends Entity implements IDrawable, IUpdateable
@@ -29,6 +36,7 @@ export class Necky extends Entity implements IDrawable, IUpdateable
 	public rightKey: KeyboardKey;
 	public leftKey: KeyboardKey;
 	public crouchKey: KeyboardKey;
+	public jumpKey: KeyboardKey;
 
 	private _stateMachine: StateMachine<Necky> = new StateMachine(this);
 
@@ -39,9 +47,12 @@ export class Necky extends Entity implements IDrawable, IUpdateable
 		this.rightKey = game.managers.inputManager.addKey(KeyCodes.ArrowRight);
 		this.leftKey = game.managers.inputManager.addKey(KeyCodes.ArrowLeft);
 		this.crouchKey = game.managers.inputManager.addKey(KeyCodes.ArrowDown);
+		this.jumpKey = game.managers.inputManager.addKey(KeyCodes.ArrowUp);
 
 		this._stateMachine.addState(NeckyStates.IDLE, new NeckyIdleState(this._stateMachine));
 		this._stateMachine.addState(NeckyStates.WALK, new NeckyWalkState(this._stateMachine));
+		this._stateMachine.addState(NeckyStates.FALL, new NeckyFallState(this._stateMachine));
+		this._stateMachine.addState(NeckyStates.JUMP, new NeckyJumpState(this._stateMachine));
 	}
 
 	public async loadAssets(): Promise<void>
@@ -84,23 +95,79 @@ export class Necky extends Entity implements IDrawable, IUpdateable
 	{
 		GraphicsShapes.drawRectangle(this.hitbox.x, this.hitbox.y, this.hitbox.width, this.hitbox.height, 0xFF0000, 0.5);
 		this._updateSpritePosition();
+
+		if (this.speed.x < 0)
+		{
+			this.sprite.scale.x = -1;
+		}
+		if (this.speed.x > 0)
+		{
+			this.sprite.scale.x = 1;
+		}
+
 		(this._stateMachine.currentState as NeckyBaseState).lateUpdate(deltaTime);
 	}
 
-	public updateMovementControls(deltaTime: number, speed: number = 40): void
+	public updateMovementControls(deltaTime: number, runSpeed: number = NeckyConfig.RUN_SPEED, runAcel: number = NeckyConfig.RUN_ACCEL): void
 	{
 		if (this.leftKey.pressed)
 		{
-			this.speed.x = -speed * deltaTime;
+			if (this.speed.x > -runSpeed)
+			{
+				this.speed.x = Math.max(this.speed.x - runAcel, -runSpeed);
+			}
+			else if (this.speed.x < -runSpeed)
+			{
+				this.speed.x = Math.min(this.speed.x + runAcel, -runSpeed);
+			}
 		}
 		else if (this.rightKey.pressed)
 		{
-			this.speed.x = speed * deltaTime;
+			if (this.speed.x < runSpeed)
+			{
+				this.speed.x = Math.min(this.speed.x + runAcel, runSpeed);
+			}
+			else if (this.speed.x > runSpeed)
+			{
+				this.speed.x = Math.max(this.speed.x - runAcel, runSpeed);
+			}
 		}
-		else if (this.rightKey.released && this.leftKey.released)
+		else
+		{
+			this.decelerate(runAcel);
+		}
+
+		this.spriteAnimator.speed = Math.abs(this.speed.x) / runSpeed;
+	}
+
+	public decelerate(deceleration: number): void
+	{
+		if (Math.abs(this.speed.x) < deceleration)
 		{
 			this.speed.x = 0;
 		}
+		else
+		{
+			this.speed.x -= deceleration * NumberUtility.sign(this.speed.x);
+		}
+	}
+
+	// Overriding these to deal with delta time
+	// Otherwise I have to multiple it by delta time everywhere else
+	public moveX(): void
+	{
+		this.hitbox.x += this.speed.x * game.managers.updateManager.currentDeltaTime;
+	}
+	public moveY(): void
+	{
+		this.hitbox.y += this.speed.y * game.managers.updateManager.currentDeltaTime;
+	}
+	public get nextHitbox(): Rectangle
+	{
+		const nextHitbox = this.hitbox.clone();
+		nextHitbox.x + this.speed.x * game.managers.updateManager.currentDeltaTime;
+		nextHitbox.y + this.speed.y * game.managers.updateManager.currentDeltaTime;
+		return nextHitbox;
 	}
 
 	public onCollisionSolved(result: ICollisionData): void

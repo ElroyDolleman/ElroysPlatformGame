@@ -1,8 +1,8 @@
 import { ICollisionData } from "../../../collision/TileCollisionManager";
 import { NeckyStates } from "../Necky";
-import { NeckyBaseState } from "./NeckyBaseState";
+import { NeckyGroundedState } from "./NeckyGroundedState";
 
-export class NeckyWalkState extends NeckyBaseState
+export class NeckyWalkState extends NeckyGroundedState
 {
 	public enter(): void
 	{
@@ -17,23 +17,7 @@ export class NeckyWalkState extends NeckyBaseState
 		{
 			this.machine.changeState(NeckyStates.IDLE);
 		}
-	}
-
-	public lateUpdate(deltaTime: number): void
-	{
-		if (this.machine.target.speed.x < 0)
-		{
-			this.machine.target.sprite.scale.x = -1;
-		}
-		if (this.machine.target.speed.x > 0)
-		{
-			this.machine.target.sprite.scale.x = 1;
-		}
-	}
-
-	public onCollisionSolved(result: ICollisionData): void
-	{
-
+		super.update(deltaTime);
 	}
 
 	public exit(): void

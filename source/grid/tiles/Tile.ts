@@ -21,6 +21,8 @@ export abstract class Tile
 		}
 	}
 
+	public canStandOn(): boolean { return false; }
+
 	public abstract intersects(collidable: CollidableRectangle): boolean;
 	public abstract solveHorizontalCollision(collidable: CollidableRectangle): CollisionResult<Tile>;
 	public abstract solveVerticalCollision(collidable: CollidableRectangle): CollisionResult<Tile>;

@@ -28,6 +28,16 @@ export class Rectangle extends PIXIRectangle implements IRectangle
 		);
 	}
 
+	public intersectsX(other: Rectangle): boolean
+	{
+		return this.right > other.left && this.left < other.right;
+	}
+
+	public intersectsY(other: Rectangle): boolean
+	{
+		return this.bottom > other.top && this.top < other.bottom;
+	}
+
 	public isOnRightOf(rect: IRectangle): boolean
 	{
 		return this.left === rect.x + rect.width;
