@@ -12,12 +12,11 @@ export class NeckyIdleState extends NeckyGroundedState
 
 	public update(deltaTime: number): void
 	{
-		if (this.machine.target.leftKey.pressed || this.machine.target.rightKey.pressed)
+		this.machine.target.updateMovementControls(deltaTime);
+
+		if (this.machine.target.speed.x !== 0)
 		{
 			this.machine.changeState(NeckyStates.WALK);
-
-			// Ensure the movement is updated at the frame you press to move
-			this.machine.target.updateMovementControls(deltaTime);
 		}
 
 		super.update(deltaTime);

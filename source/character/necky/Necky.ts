@@ -1,7 +1,6 @@
 import { Container, DisplayObject, Sprite, Texture } from "pixi.js";
 import { ICollisionData } from "../../collision/TileCollisionManager";
 import { Entity } from "../../entities/Entity";
-import { IDrawable } from "../../entities/IDrawable";
 import { IPoint } from "../../geometry/IPoint";
 import { game } from "../../app";
 import { TexturePaths } from "../../assets/Assets";
@@ -27,7 +26,7 @@ export enum NeckyStates {
 	JUMP = "jump",
 }
 
-export class Necky extends Entity implements IDrawable, IUpdateable
+export class Necky extends Entity implements IUpdateable
 {
 	public sprite: Sprite;
 	public spriteAnimator: SpriteAnimator;
@@ -41,7 +40,7 @@ export class Necky extends Entity implements IDrawable, IUpdateable
 
 	public constructor(spawnPosition: IPoint)
 	{
-		super({ x: 0, y: 0, width: 32, height: 32 }, spawnPosition);
+		super({ x: 0, y: 0, width: 32, height: 32 }, { x: spawnPosition.x - 16, y: spawnPosition.y - 32 });
 
 		this.rightKey = game.managers.inputManager.addKey(KeyCodes.ArrowRight);
 		this.leftKey = game.managers.inputManager.addKey(KeyCodes.ArrowLeft);
@@ -52,14 +51,9 @@ export class Necky extends Entity implements IDrawable, IUpdateable
 		this._stateMachine.addState(NeckyStates.WALK, new NeckyWalkState(this._stateMachine));
 		this._stateMachine.addState(NeckyStates.FALL, new NeckyFallState(this._stateMachine));
 		this._stateMachine.addState(NeckyStates.JUMP, new NeckyJumpState(this._stateMachine));
-	}
 
-	public async loadAssets(): Promise<void>
-	{
-		const texture = await game.assetLoader.loadTexture(TexturePaths.NECKY);
-
+		const texture = game.assetLoader.getCachedTexture(TexturePaths.NECKY);
 		this.sprite = new Sprite(new Texture(texture.baseTexture));
-
 		this.sprite.anchor.x = 0.5;
 		this.sprite.anchor.y = 1;
 		this.sprite.position.x = this.hitbox.centerX;
@@ -134,8 +128,6 @@ export class Necky extends Entity implements IDrawable, IUpdateable
 		{
 			this.decelerate(runAcel);
 		}
-
-		this.spriteAnimator.speed = Math.abs(this.speed.x) / runSpeed;
 	}
 
 	public decelerate(deceleration: number): void

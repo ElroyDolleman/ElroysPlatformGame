@@ -12,4 +12,9 @@ export class AssetLoader
 		this._cache[path] = texture;
 		return texture;
 	}
+
+	public getCachedTexture(path: string): Texture
+	{
+		return this._cache[path];
+	}
 }

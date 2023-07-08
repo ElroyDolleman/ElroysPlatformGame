@@ -24,10 +24,10 @@ export class GraphicsShapes
 	/**
 	 * Draws a rectangle for just 1 frame. Handy for debugging, otherwise it should not be used.
 	 */
-	public static drawRectangle(x: number, y: number, width: number, height: number, color: number = 0x0, alpha: number = 1): void
+	public static drawRectangle(x: number, y: number, width: number, height: number, color: number = 0x0, alpha: number = 1, visibleTime: number = 0): void
 	{
 		const rect = this.getRectangle(x, y, width, height, color, alpha);
 		game.app.stage.addChild(rect);
-		game.managers.delayManager.afterFrame().then(() => game.app.stage.removeChild(rect));
+		game.managers.delayManager.afterMilliseconds(visibleTime).then(() => game.app.stage.removeChild(rect));
 	}
 }

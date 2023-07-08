@@ -33,18 +33,39 @@ let getMapData = async(mapFileName) =>
 	const tiledJSONData = JSON.parse(fileData);
 
 	const tilesetName = tiledJSONData.tilesets[0].source.match(/\/([^/]+)\.tsx$/)[1];
-	const layers = {};
+	const tilelayers = {};
+	const objects = [];
 
 	tiledJSONData.layers.forEach(element => {
 
-		layers[element.name] = {
-			tiles: element.data.map((num) => num - 1)
+		switch(element.type)
+		{
+			default:
+				console.error("Unsuported layer type", element.type);
+				break;
+			case "tilelayer":
+				tilelayers[element.name] = {
+					tiles: element.data.map((num) => num - 1)
+				}
+				break;
+			case "objectgroup":
+				element.objects.forEach(data => {
+					objects.push({
+						name: data.name,
+						x: data.x,
+						y: data.y,
+						width: data.width,
+						height: data.height
+					});
+				});
+				break;
 		}
 	});
 
 	return {
 		tilesetName,
-		layers,
+		layers: tilelayers,
+		objects,
 		width: tiledJSONData.width,
 		height: tiledJSONData.height,
 		tileWidth: tiledJSONData.tilewidth,

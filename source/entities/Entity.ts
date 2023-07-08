@@ -1,3 +1,4 @@
+import { Container, DisplayObject } from "pixi.js";
 import { Collidable } from "../collision/Collidable";
 import { IPoint } from "../geometry/IPoint";
 import { IRectangle } from "../geometry/IRectangle";
@@ -23,4 +24,12 @@ export abstract class Entity extends Collidable<Rectangle>
 		this.hitbox.x = position.x;
 		this.hitbox.y = position.y;
 	}
+
+	public abstract addToContainer(container: Container<DisplayObject>): void;
+	public abstract update(deltaTime: number): void;
+
+	/**
+	 * The update function that occurs after the collision resolution
+	 */
+	public abstract lateUpdate(deltaTime: number): void;
 }

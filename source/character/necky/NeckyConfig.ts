@@ -8,6 +8,6 @@ export class NeckyConfig
 
 	public static readonly INITIAL_JUMP_POWER: number = 12;
 	public static readonly JUMP_POWER: number = 24;
-	public static readonly GRAVITY: number = 7;
+	public static readonly GRAVITY: number = 6;
 	public static readonly MAX_FALLSPEED: number = 148;
 }

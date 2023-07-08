@@ -1,14 +1,9 @@
-export interface Entity {
-	class: string;
-	gid: number;
-	height: number;
-	id: number;
+export interface EntityData {
 	name: string;
-	rotation: number;
-	visible: boolean;
-	width: number;
 	x: number;
 	y: number;
+	width: number;
+	height: number;
 }
 
 export interface TilesData {
@@ -16,10 +11,11 @@ export interface TilesData {
 }
 
 export interface LevelData {
-	height: number;
 	layers: { [key: string]: TilesData; };
+	objects: EntityData[];
 	tilesetName: string;
 	tileWidth: number;
 	tileHeight: number;
 	width: number;
+	height: number;
 }
